@@ -1,0 +1,11 @@
+{
+  "name": "vue-page",
+  "version": "0.0.3",
+  "main": "dist/index.js",
+  "author": "xiaohuicat",
+  "license": "MIT",
+  "dependencies": {
+    "vue": "^3.4",
+    "vue-router": "^4.0"
+  }
+}
