@@ -42,8 +42,10 @@ page.setLive('onLoad', func);
 ```
 
 # 完整案例
+在<script setup></script>中使用
 ```javascript
 import { Page } from 'vue-page';
+const page = new Page;
 const { $ } = page;
 page.setRefs({
   num: 0,                   // 响应式数据ref
@@ -60,7 +62,7 @@ page.setFuns({clear: () => { $.num = 0; }});
   <button @click="clear">重置</button>
 </template>
 ```
-# ------------后续更新计划-------------
+# >>>后续更新计划
 
 # 数据加载
 ```javascript
