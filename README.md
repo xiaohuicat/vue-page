@@ -48,9 +48,9 @@ import { Page } from 'vue-page';
 const page = new Page;
 const { $ } = page;
 page.setRefs({
-  num: 0,                   // 响应式数据ref
-  price: 100,               // 响应式数据ref
-  total: () => $.num+'元',  // 计算属性computed
+  num: 0,                           // 响应式数据ref
+  price: 100,                       // 响应式数据ref
+  total: () => $.num*$.price+'元',  // 计算属性computed
 });
 page.setFuns({clear: () => { $.num = 0; }});
 ```
