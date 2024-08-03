@@ -17,8 +17,8 @@ const { $ } = page;
 ```javascript
 // 设置ref和computed
 page.setRefs({
-num: 0,                  // 响应式数据ref
-text: () => $.num+'个',  // 计算属性computed
+  num: 0,                  // 响应式数据ref
+  total: () => $.num+'个',  // 计算属性computed
 });
 ```
 
@@ -30,13 +30,37 @@ page.setFuns({clear: () => { $.num = 0; }});
 page.setFun('double', () => { $.num = $.num*2; });
 ```
 
-# 添加生命周期，可以多次添加，触发时按顺序执行
+# 添加生命周期
 ```javascript
+// 一次添加多个生命周期，可以多次添加，触发时按顺序执行
 page.setLives({
-onReady(){setTimeout(() => $.num++, 3000);},  // 页面准备好了
-onDestroy(){() => { }}                        // 页面销毁前
+  onReady(){setTimeout(() => $.num++, 3000);},  // 页面准备好了
+  onDestroy(){() => { }}                        // 页面销毁前
 })
+// 添加一个生命周期
+page.setLive('onLoad', func);
 ```
+
+# 完整案例
+```javascript
+import { Page } from 'vue-page';
+const { $ } = page;
+page.setRefs({
+  num: 0,                   // 响应式数据ref
+  price: 100,               // 响应式数据ref
+  total: () => $.num+'元',  // 计算属性computed
+});
+page.setFuns({clear: () => { $.num = 0; }});
+```
+```html
+<template>
+  <div>数量：{{num}}</div>
+  <div>单价：{{price}}</div>
+  <div>总价：{{total}}</div>
+  <button @click="clear">重置</button>
+</template>
+```
+# ------------后续更新计划-------------
 
 # 数据加载
 ```javascript
@@ -52,7 +76,7 @@ page.local.update(key, value);
 page.local.save(key, value);
 ```
 
-# 多线程，web worker和websocket
+# 拓展功能
 ```javascript
 page.thread(data, func, callback);
 page.wait(time, callback);
