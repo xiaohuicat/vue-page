@@ -50,7 +50,7 @@ const { $ } = page;
 page.setRefs({
   num: 0,                   // 响应式数据ref
   price: 100,               // 响应式数据ref
-  total: () => $.num+'元',  // 计算属性computed
+  total: () => ($.num*$.price)+'元',  // 计算属性computed
 });
 page.setFuns({clear: () => { $.num = 0; }});
 ```
@@ -62,21 +62,28 @@ page.setFuns({clear: () => { $.num = 0; }});
   <button @click="clear">重置</button>
 </template>
 ```
-# >>>后续更新计划
 
 # 数据加载
 ```javascript
-// 加载本地数据，存在则加载，不存在创建一个空对象
-page.local.load(name);
-// 获取本地数据，key可以是'a.b.c'，根据 '.' 分隔逐层取对象属性
+// 获取本地数据，key可以是'a.b.c'，根据 '.' 分隔逐层取对象属性，key为空时获取全部
 page.local.get(key);
 // 设置本地数据, key可以是'a.b.c'，根据 '.' 分隔逐层设置对象属性
 page.local.set(key, value);
 // 更新本地数据，没有值时不更新，返回false，否则更新，返回true。
 page.local.update(key, value);
-// 保存本地数据
+// 删除本地数据，没有值时，返回false，否则返回true。
+page.local.delete(key);
+// 设置并保存本地数据，没有值时直接保存数据
 page.local.save(key, value);
+// 释放数据，解除引用，不删除本地数据
+page.local.free();
+// 清除数据，解除引用，删除本地数据
+page.local.clear();
+// 查看数据大小
+page.local.size();
 ```
+
+# >>>后续更新
 
 # 拓展功能
 ```javascript
@@ -98,3 +105,9 @@ page.loadAsStore(name);
 // 请求数据和网络数据到全局数据
 page.requestAsStore(url, params, callback);
 ```
+
+# 了解更多
+GitHub：https://github.com/xiaohuicat/vue-page
+web: https://greatnote.cn/vue-page/
+wechat: before-i-know
+email: 1258702350@qq.com

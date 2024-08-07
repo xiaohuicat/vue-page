@@ -16,6 +16,7 @@ import {
   ref,
   computed,
 } from '@vue/runtime-core'
+import { LocalStore } from "./LocalStore";
 
 const LIVE_MAP = {
   onMounted,
@@ -55,9 +56,9 @@ export function createFuns(ctx, obj) {
 }
 
 export class Page{
-  constructor(){
+  constructor(localStoreName){
     this.instance = getCurrentInstance();
-    const { props, emit, proxy } = this.instance;
+    const {props, emit, proxy} = this.instance;
     this.props = props;
     this.emit = emit;
     this.$ = new Proxy({...proxy}, {
@@ -76,7 +77,7 @@ export class Page{
           return true;
         }
 
-        if ( key in target) {
+        if (key in target) {
           if (isRef(target[key])) {
             target[key].value = value;
           } else {
@@ -91,8 +92,11 @@ export class Page{
       }
     });
 
+    console.log(this.props);
+    
     this.router = useRouter();
     this.callback = new Callback();
+    this.local = new LocalStore(localStoreName?localStoreName:'vue-page-store');
 
     // vue卸载时自动销毁
     onUnmounted(()=>this?.destroy());
@@ -228,6 +232,8 @@ export class Page{
     this.proxy = null;
     this.$ = null;
     this.router = null;
+    this.local.free();
+    this.local = null;
     this.callback.run('destroy');
     this.callback.destroy();
     this.callback = null;

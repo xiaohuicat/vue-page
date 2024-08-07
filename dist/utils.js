@@ -9,15 +9,44 @@ function isObject(obj) {
   return obj !== null && typeof obj === 'object' && !Array.isArray(obj);
 }
 
+function getObjectProperty(obj, key, default_value) {
+  const keys = key.split('.');
+  let current = obj;
+
+  for (let i = 0; i < keys.length; i++) {
+    if (!current[keys[i]]) {
+      return default_value;
+    }
+    current = current[keys[i]];
+  }
+
+  return current;
+}
+
 function setObjectProperty(obj, key, value) {
   const keys = key.split('.');
   let current = obj;
 
   for (let i = 0; i < keys.length - 1; i++) {
-      if (!current[keys[i]]) {
-          current[keys[i]] = {};
-      }
-      current = current[keys[i]];
+    if (!current[keys[i]]) {
+      current[keys[i]] = {};
+    }
+    current = current[keys[i]];
+  }
+
+  current[keys[keys.length - 1]] = value;
+  return obj;
+}
+
+function setObjectExistProperty(obj, key, value) {
+  const keys = key.split('.');
+  let current = obj;
+
+  for (let key of keys) {
+    if (!current[key]) {
+      break;
+    }
+    current = current[keys[i]];
   }
 
   current[keys[keys.length - 1]] = value;
@@ -59,7 +88,9 @@ function downloadFileByUrl(url, filename) {
 export {
   log,
   isObject,
+  getObjectProperty,
   setObjectProperty,
+  setObjectExistProperty,
   downloadFileByData,
   downloadFileByUrl,
 }
