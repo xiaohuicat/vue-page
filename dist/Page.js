@@ -30,6 +30,16 @@ const LIVE_MAP = {
   onDestroy: onUnmounted,
 }
 
+function tryFunc(func, obj){
+  if (typeof func === "function") {
+    try{
+      func.call(obj);
+    }catch(e){
+      console.log(e);
+    }
+  }
+}
+
 function createRef(val){
   if (typeof val === 'function') {
     return computed(val);
@@ -91,8 +101,6 @@ export class Page{
         return true;
       }
     });
-
-    console.log(this.props);
     
     this.router = useRouter();
     this.callback = new Callback();
@@ -200,12 +208,12 @@ export class Page{
     if (isObject(LIVE)) {
       for (let key in LIVE) {
         if (key in LIVE_MAP) {
-          let val = LIVE[key];
-          if (typeof val !== "function") {
+          let func = LIVE[key];
+          if (typeof func !== "function") {
             console.log(`${key}'s value need to be a function`);
             return;
           }
-          LIVE_MAP[key](val);
+          LIVE_MAP[key](()=>tryFunc(func, this));
         } else {
           console.log(`${key} is not a life function`);
         }
@@ -219,7 +227,7 @@ export class Page{
           console.log(`func need to be a function`);
           return;
         }
-        LIVE_MAP[name](func);
+        LIVE_MAP[name](()=>tryFunc(func, this));
       } else {
         console.log(`${name} is not a life function`);
       }
